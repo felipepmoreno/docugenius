@@ -1,0 +1,56 @@
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    background-color: var(--background-color);
+  }
+  
+  .dashboard-content {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    
+    .Resizer {
+      background: var(--border-color);
+      opacity: 0.2;
+      z-index: 1;
+      box-sizing: border-box;
+      background-clip: padding-box;
+    }
+  
+    .Resizer.vertical {
+      width: 7px;
+      margin: 0 -3px;
+      cursor: col-resize;
+    }
+  
+    .Resizer.vertical:hover {
+      opacity: 0.5;
+    }
+  }
+  
+  .Pane {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .split-container {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    
+    .gutter {
+      background-color: var(--border-color);
+      opacity: 0.2;
+      
+      &:hover {
+        opacity: 0.5;
+      }
+      
+      &.gutter-horizontal {
+        cursor: col-resize;
+      }
+    }
+}

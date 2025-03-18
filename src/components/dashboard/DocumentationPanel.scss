@@ -1,0 +1,72 @@
+.documentation-panel {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+  }
+  
+  .documentation-header {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0;
+    }
+  }
+  
+  .documentation-content {
+    flex: 1;
+    overflow: auto;
+    position: relative;
+    
+    .processing-animation {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      height: 100%;
+      text-align: center;
+      
+      .spinner {
+        width: 50px;
+        height: 50px;
+        border: 3px solid rgba(74, 111, 255, 0.1);
+        border-radius: 50%;
+        border-top-color: var(--primary-color);
+        animation: spin 1s linear infinite;
+        margin-bottom: 1.5rem;
+      }
+      
+      p {
+        margin-bottom: 1rem;
+        color: var(--text-color);
+      }
+      
+      .ai-message {
+        color: var(--text-light);
+        max-width: 80%;
+        font-style: italic;
+        font-size: 0.875rem;
+      }
+    }
+    
+    .empty-documentation, .no-file-message {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: var(--text-light);
+      text-align: center;
+      padding: 2rem;
+    }
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
