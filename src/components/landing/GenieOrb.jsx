@@ -41,19 +41,22 @@ const GenieOrb = () => {
     const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
     robot.add(body);
 
-    // Cabeça (esfera achatada)
-    const headGeometry = new THREE.SphereGeometry(0.3, 32, 32);
+    // Cabeça (esfera achatada) - Ajustada para evitar artefatos
+    const headGeometry = new THREE.SphereGeometry(0.3, 32, 16, 0, Math.PI * 2, 0, Math.PI);
     const headMaterial = new THREE.MeshPhongMaterial({ 
       color: 0xffffff,
-      shininess: 100
+      shininess: 100,
+      side: THREE.FrontSide // Garante que só renderize a parte externa
     });
     const head = new THREE.Mesh(headGeometry, headMaterial);
     head.position.y = 0.7;
     head.scale.y = 0.8;
     robot.add(head);
 
-    // Olhos (2 cilindros pequenos)
-    const eyeGeometry = new THREE.CylinderGeometry(0.08, 0.08, 0.05, 16);
+    // Removendo as declarações do holograma e holoLight
+    
+    // Olhos (2 esferas pequenas)
+    const eyeGeometry = new THREE.SphereGeometry(0.08, 32, 32);
     const eyeMaterial = new THREE.MeshPhongMaterial({ 
       color: 0x0eeee0,
       emissive: 0x00ff00,
@@ -61,8 +64,7 @@ const GenieOrb = () => {
     });
 
     const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
-    leftEye.position.set(-0.15, 0.7, 0.25);
-    leftEye.rotation.x = Math.PI / 2;
+    leftEye.position.set(-0.15, 0.7, 0.22);
     robot.add(leftEye);
 
     const rightEye = leftEye.clone();
@@ -106,6 +108,8 @@ const GenieOrb = () => {
 
     scene.add(robot);
 
+    // Remover a criação do robô filho (removido o bloco childRobot)
+
     // Luzes
     const frontLight = new THREE.DirectionalLight(0xffffff, 1);
     frontLight.position.set(2, 2, 4);
@@ -134,19 +138,20 @@ const GenieOrb = () => {
       const time = Date.now() * 0.001;
 
       // Flutuação suave
-      robot.position.y = Math.sin(time) * 0.2;
+      robot.position.y = Math.sin(time) * 0.35;
       
-      // Rotação do robô seguindo o mouse (limitada a 70% e mais suave)
-      const targetRotationY = mousePosition.current.x * Math.PI * 0.35; // Reduzido de 0.5 para 0.35
-      const targetRotationX = -mousePosition.current.y * Math.PI * 0.15; // Invertido e reduzido
-      
-      // Movimento mais suave (reduzido de 0.1 para 0.05)
-      robot.rotation.y += (targetRotationY - robot.rotation.y) * 0.05;
-      robot.rotation.x += (targetRotationX - robot.rotation.x) * 0.05;
-      
-      // Ajuste da cabeça para seguir o mouse de forma mais suave
-      head.rotation.y = (targetRotationY - robot.rotation.y) * 0.7; // Aumentado para movimento mais amplo
-      head.rotation.x = (targetRotationX - robot.rotation.x) * 0.7;
+      robot.rotation.x = 0.5;
+    
+      // Rotação do robô seguindo o mouse
+      const targetRotationY = mousePosition.current.x * Math.PI * 0.2;
+      const targetRotationX = (-mousePosition.current.y * Math.PI * 0.08) - 0.2;
+    
+      robot.rotation.y += (targetRotationY - robot.rotation.y) * 0.03;
+      robot.rotation.x += (targetRotationX - robot.rotation.x) * 0.03;
+    
+      // Ajuste das cabeças
+      head.rotation.y = (targetRotationY - robot.rotation.y) * 0.3;
+      head.rotation.x = (targetRotationX - robot.rotation.x) * 0.3;
 
       // Piscar olhos ocasionalmente
       if (Math.sin(time * 3) > 0.95) {
